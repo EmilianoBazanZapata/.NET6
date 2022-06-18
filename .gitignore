@@ -6,6 +6,7 @@
 # User-specific files
 *.rsuser
 *.suo
+WebApi/.vs/WebApi/v17/.suo
 
 .suo
 *.user

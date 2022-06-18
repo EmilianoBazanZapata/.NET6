@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApi.Models;
 
 namespace WebApi.Datos
 {
@@ -10,5 +11,7 @@ namespace WebApi.Datos
         }
 
         //Escribir los modelos
+        public DbSet<Categoria> Categorias { get; set; }
+
     }
 }
