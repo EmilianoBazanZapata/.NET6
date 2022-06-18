@@ -11,7 +11,11 @@ namespace WebApi.Datos
         }
 
         //Escribir los modelos
-        public DbSet<Categoria> Categorias { get; set; }
-
+        //Cuando crear migraciones : 
+        //1- cuando se crea una nueva clase
+        //2-cuando agregue una nueva propiedad
+        //3-cuando modifique un valor de campo en la clase
+        public DbSet<Categoria>? Categorias { get; set; }
+        public DbSet<Usuario>? Usuarios { get; set; }
     }
 }
