@@ -17,5 +17,6 @@ namespace WebApi.Datos
         //3-cuando modifique un valor de campo en la clase
         public DbSet<Categoria>? Categorias { get; set; }
         public DbSet<Usuario>? Usuarios { get; set; }
+        public DbSet<Articulo>? Articulos { get; set; }
     }
 }
