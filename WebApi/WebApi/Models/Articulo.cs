@@ -18,5 +18,11 @@ namespace WebApi.Models
         public double Calificacion { get; set; }
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
+
+
+        //relacion 
+        [ForeignKey("Categoria")]
+        public int Categoria_ID { get; set; }
+        public Categoria? Categoria { get; set; }
     }
 }

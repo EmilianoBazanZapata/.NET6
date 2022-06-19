@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Datos;
 
@@ -11,9 +12,10 @@ using WebApi.Datos;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220619233553_RelacionCategoriaArticulo")]
+    partial class RelacionCategoriaArticulo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,28 +74,6 @@ namespace WebApi.Migrations
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("WebApi.Models.DetalleUsuario", b =>
-                {
-                    b.Property<int>("DetalleUsuarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleUsuarioId"), 1L, 1);
-
-                    b.Property<string>("Cedula")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Deporte")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mascota")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DetalleUsuarioId");
-
-                    b.ToTable("DetalleUsuarios");
-                });
-
             modelBuilder.Entity("WebApi.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -101,9 +81,6 @@ namespace WebApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("DetalleUsuarioId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
@@ -115,9 +92,6 @@ namespace WebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DetalleUsuarioId")
-                        .IsUnique();
 
                     b.ToTable("Usuarios");
                 });
@@ -131,22 +105,6 @@ namespace WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Categoria");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Usuario", b =>
-                {
-                    b.HasOne("WebApi.Models.DetalleUsuario", "DetalleUsuario")
-                        .WithOne("Usuario")
-                        .HasForeignKey("WebApi.Models.Usuario", "DetalleUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DetalleUsuario");
-                });
-
-            modelBuilder.Entity("WebApi.Models.DetalleUsuario", b =>
-                {
-                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,5 +14,10 @@ namespace WebApi.Models
         public string? Direccion { get; set; }
         [NotMapped]
         public int Edad { get; set; }
+
+        [ForeignKey("DetalleUsuario")]
+        public int DetalleUsuarioId { get; set; }
+        public DetalleUsuario? DetalleUsuario { get; set; }
+
     }
 }

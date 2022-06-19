@@ -18,5 +18,6 @@ namespace WebApi.Datos
         public DbSet<Categoria>? Categorias { get; set; }
         public DbSet<Usuario>? Usuarios { get; set; }
         public DbSet<Articulo>? Articulos { get; set; }
+        public DbSet<DetalleUsuario>? DetalleUsuarios { get; set; }
     }
 }
