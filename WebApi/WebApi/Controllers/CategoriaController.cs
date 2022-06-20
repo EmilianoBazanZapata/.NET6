@@ -44,10 +44,10 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult CrearMultipleOpcion2()
         {
-            List<Categoria> listaDeCategoria = new List<Categoria>();
+            List<Categoria> listaDeCategorias = new List<Categoria>();
             for (int i = 0; i < 2; i++)
             {
-                listaDeCategoria.Add(new Categoria
+                listaDeCategorias.Add(new Categoria
                 {
                     Nombre = Guid.NewGuid().ToString()
                 });
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
                 //    Nombre = Guid.NewGuid().ToString() 
                 //});
             }
-            _context.AddRangeAsync(listaDeCategoria);
+            _context.AddRangeAsync(listaDeCategorias);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,10 +64,10 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult CrearMultipleOpcion5()
         {
-            List<Categoria> listaDeCategoria = new List<Categoria>();
+            List<Categoria> listaDeCategorias = new List<Categoria>();
             for (int i = 0; i < 5; i++)
             {
-                listaDeCategoria.Add(new Categoria
+                listaDeCategorias.Add(new Categoria
                 {
                     Nombre = Guid.NewGuid().ToString()
                 });
@@ -76,7 +76,35 @@ namespace WebApi.Controllers
                 //    Nombre = Guid.NewGuid().ToString() 
                 //});
             }
-            _context.AddRangeAsync(listaDeCategoria);
+            _context.AddRangeAsync(listaDeCategorias);
+            _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult VistaCrearMultipleCategoria() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CrearMultipleOpcionFormulario() 
+        {
+            string categoriaForm = Request.Form["Nombre"];
+            var listaCategorias = from val 
+                                  in categoriaForm.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries) 
+                                  select (val);
+
+            List<Categoria> categorias = new List<Categoria>();
+
+            foreach (var categoria in listaCategorias)
+            {
+                categorias.Add(new Categoria 
+                {
+                    Nombre = categoria
+                });
+            }
+            _context.Categorias.AddRangeAsync(categorias);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
