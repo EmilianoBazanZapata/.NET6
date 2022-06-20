@@ -4,9 +4,12 @@ namespace WebApi.Models
 {
     public class Etiqueta
     {
-        [Key]
-        public int Etiqueta_ID { get; set; }
+        public int EtiquetaID { get; set; }
+
+        [Required(ErrorMessage = "Es necesario ingresar un Titulo")]
+        [MaxLength(20)]
         public string? Titulo { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime Fecha  { get; set; }
 

@@ -25,7 +25,7 @@ namespace WebApi.Datos
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ArticuloEtiqueta>()
-                        .HasKey(ae => new { ae.Etiqueta_ID, ae.ArticuloId });
+                        .HasKey(ae => new { ae.EtiquetaID, ae.ArticuloId });
         }
     }
 }
