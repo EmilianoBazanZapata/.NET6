@@ -9,8 +9,11 @@ namespace WebApi.Models
         [Required]
         [MaxLength(50)]
         [DisplayFormat(ConvertEmptyStringToNull = true,NullDisplayText = "[NULL]")]
-        public string? Nombre { get; set; }
+        public string Nombre { get; set; }
 
-        public List<Articulo>? Articulo { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime FechaCreacion { get; set; }
+
+        public List<Articulo> Articulo { get; set; }
     }
 }

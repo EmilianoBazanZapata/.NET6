@@ -16,8 +16,12 @@ namespace WebApi.Controllers
 
         public IActionResult Index()
         {
-            List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
+            //consulta inicial
+            //List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
 
+            //consulta fiñltrando por fecha
+            DateTime fechaComparacion = new DateTime(2021,11,05);
+            List<Categoria> listaDeCategorias = _context.Categorias?.Where(f=>f.FechaCreacion >= fechaComparacion).OrderBy(f=>f.FechaCreacion).ToList();
 
             return View(listaDeCategorias);
         }
@@ -143,5 +147,24 @@ namespace WebApi.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult BorrarMultiple2()
+        {
+            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.CategoriaId).Take(2); 
+            _context.Categorias.RemoveRange(categorias);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult BorrarMultiple5()
+        {
+            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.CategoriaId).Take(5);
+            _context.Categorias.RemoveRange(categorias);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

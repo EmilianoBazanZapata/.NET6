@@ -14,6 +14,8 @@
         <a asp-action="CrearMultipleOpcion2" class="btn btn-secondary form-control">Crear Multiples (2 Categorías)</a>
         <a asp-action="CrearMultipleOpcion5" class="btn btn-secondary form-control mt-2">Crear Multiples (5 Categorías)</a>
         <a asp-action="VistaCrearMultipleCategoria" class="btn btn-secondary form-control mt-2">Crear Multiples Categorías en formulario</a>
+        <a asp-action="BorrarMultiple2" class="btn btn-warning form-control mt-2">Borrar Multiple (2 Categorias)</a>
+        <a asp-action="BorrarMultiple5" class="btn btn-warning form-control mt-2">Borrar Multiple (5 Categorias)</a>
     </div>
 </div>
 <div class="mt-4">
@@ -22,12 +24,14 @@
         <table class="table table-striped border">
             <tr>
                 <th>Nombre de Categoria</th>
+                <th>Fecha de Creación</th>
                 <th></th>
             </tr>
             @foreach (var categoria in Model)
             {
                 <tr>
                     <td>@categoria.Nombre</td>
+                    <td>@categoria.FechaCreacion</td>
                     <td>
                         <a class="btn btn-primary text-white" asp-action="Editar" asp-route-id="@categoria.CategoriaId">Editar</a>
                         <a class="btn btn-danger text-white" asp-action="Borrar" asp-route-id="@categoria.CategoriaId">Borrar</a>
