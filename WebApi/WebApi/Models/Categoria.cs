@@ -8,5 +8,6 @@ namespace WebApi.Models
         public int Categoria_Id { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = true,NullDisplayText = "[NULL]")]
         public string? Nombre { get; set; }
+        public List<Articulo>? Articulo { get; set; }
     }
 }

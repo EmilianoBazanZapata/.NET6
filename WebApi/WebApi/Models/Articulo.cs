@@ -24,5 +24,8 @@ namespace WebApi.Models
         [ForeignKey("Categoria")]
         public int Categoria_ID { get; set; }
         public Categoria? Categoria { get; set; }
+
+        //para relacion muchos a muchos
+        public ICollection<ArticuloEtiqueta>? ArticuloEtiqueta { get; set; }
     }
 }

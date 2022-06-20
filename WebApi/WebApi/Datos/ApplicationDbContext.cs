@@ -5,7 +5,7 @@ namespace WebApi.Datos
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options ) : base(options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
@@ -19,5 +19,13 @@ namespace WebApi.Datos
         public DbSet<Usuario>? Usuarios { get; set; }
         public DbSet<Articulo>? Articulos { get; set; }
         public DbSet<DetalleUsuario>? DetalleUsuarios { get; set; }
+        public DbSet<Etiqueta>? Etiquetas { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ArticuloEtiqueta>()
+                        .HasKey(ae => new { ae.Etiqueta_ID, ae.Articulo_Id });
+        }
     }
 }

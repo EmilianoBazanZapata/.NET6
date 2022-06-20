@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Datos;
 
@@ -11,9 +12,10 @@ using WebApi.Datos;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220620003657_RelacionUnoAMuchosEntreCategoriaYArticulo")]
+    partial class RelacionUnoAMuchosEntreCategoriaYArticulo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,21 +58,6 @@ namespace WebApi.Migrations
                     b.ToTable("Tbl_Articulo");
                 });
 
-            modelBuilder.Entity("WebApi.Models.ArticuloEtiqueta", b =>
-                {
-                    b.Property<int>("Etiqueta_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Articulo_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Etiqueta_ID", "Articulo_Id");
-
-                    b.HasIndex("Articulo_Id");
-
-                    b.ToTable("ArticuloEtiqueta");
-                });
-
             modelBuilder.Entity("WebApi.Models.Categoria", b =>
                 {
                     b.Property<int>("Categoria_Id")
@@ -107,25 +94,6 @@ namespace WebApi.Migrations
                     b.HasKey("DetalleUsuarioId");
 
                     b.ToTable("DetalleUsuarios");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Etiqueta", b =>
-                {
-                    b.Property<int>("Etiqueta_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Etiqueta_ID"), 1L, 1);
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Titulo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Etiqueta_ID");
-
-                    b.ToTable("Etiquetas");
                 });
 
             modelBuilder.Entity("WebApi.Models.Usuario", b =>
@@ -167,25 +135,6 @@ namespace WebApi.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("WebApi.Models.ArticuloEtiqueta", b =>
-                {
-                    b.HasOne("WebApi.Models.Articulo", "Articulo")
-                        .WithMany("ArticuloEtiqueta")
-                        .HasForeignKey("Articulo_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Models.Etiqueta", "Etiqueta")
-                        .WithMany("ArticuloEtiqueta")
-                        .HasForeignKey("Etiqueta_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Articulo");
-
-                    b.Navigation("Etiqueta");
-                });
-
             modelBuilder.Entity("WebApi.Models.Usuario", b =>
                 {
                     b.HasOne("WebApi.Models.DetalleUsuario", "DetalleUsuario")
@@ -197,11 +146,6 @@ namespace WebApi.Migrations
                     b.Navigation("DetalleUsuario");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Articulo", b =>
-                {
-                    b.Navigation("ArticuloEtiqueta");
-                });
-
             modelBuilder.Entity("WebApi.Models.Categoria", b =>
                 {
                     b.Navigation("Articulo");
@@ -210,11 +154,6 @@ namespace WebApi.Migrations
             modelBuilder.Entity("WebApi.Models.DetalleUsuario", b =>
                 {
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Etiqueta", b =>
-                {
-                    b.Navigation("ArticuloEtiqueta");
                 });
 #pragma warning restore 612, 618
         }
