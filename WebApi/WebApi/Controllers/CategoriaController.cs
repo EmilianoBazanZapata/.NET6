@@ -134,5 +134,14 @@ namespace WebApi.Controllers
             }
             return View(categoria);
         }
+
+        [HttpGet]
+        public IActionResult Borrar(int? Id) 
+        {
+            var Categoria = _context.Categorias.FirstOrDefault(c=>c.CategoriaId == Id);
+            _context.Categorias.Remove(Categoria);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
