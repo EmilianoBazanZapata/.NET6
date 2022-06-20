@@ -5,7 +5,7 @@ namespace WebApi.Models
     public class ArticuloEtiqueta
     {
         [ForeignKey("Articulo")]
-        public int Articulo_Id { get; set; }
+        public int ArticuloId { get; set; }
         [ForeignKey("Etiqueta")]
         public int Etiqueta_ID { get; set; }
 
