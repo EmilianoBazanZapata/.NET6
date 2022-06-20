@@ -7,12 +7,18 @@ namespace WebApi.Models
     {
         public int Id { get; set; }
         public string? Nombre { get; set; }
-        //[RegularExpression(@"^[\w-\._\%]+@(?:[\w-]+\.)+[\w]{2,6}$",ErrorMessage = "Ingrese un Email Correcto")]
+
+        [MaxLength(50)]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[NULL]")]
         [EmailAddress(ErrorMessage = "Ingrese un Email Correcto")]
         public string? Email { get; set; }
-        [Display(Name = "Dirección del Usuario")]
+
+        [MaxLength(50)]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[NULL]")]
         public string? Direccion { get; set; }
-        [NotMapped]
+
+        [MaxLength(50)]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[NULL]")]
         public int Edad { get; set; }
 
         [ForeignKey("DetalleUsuario")]

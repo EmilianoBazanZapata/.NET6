@@ -11,7 +11,8 @@ namespace WebApi.Models
         [MaxLength(20)]
         public string Titulo { get; set; } = string.Empty;
 
-        [StringLength(250, ErrorMessage = "La Descripcion no debe superar los 500 Caracteres")]
+        [StringLength(250, ErrorMessage = "La Descripcion no debe superar los 250 Caracteres")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[NULL]")]
         public string Descripcion { get; set; } = string.Empty;
 
         [Range(0.1, 0.5)]
