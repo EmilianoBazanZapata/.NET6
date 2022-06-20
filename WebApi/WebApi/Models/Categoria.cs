@@ -6,6 +6,7 @@ namespace WebApi.Models
     {
         public int CategoriaId { get; set; }
 
+        [Required]
         [MaxLength(50)]
         [DisplayFormat(ConvertEmptyStringToNull = true,NullDisplayText = "[NULL]")]
         public string? Nombre { get; set; }

@@ -22,5 +22,23 @@ namespace WebApi.Controllers
             return View(listaDeCategorias);
         }
 
+        [HttpGet]
+        public IActionResult Crear() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Crear(Categoria categoria) 
+        {
+            if (ModelState.IsValid) 
+            {
+                _context.Categorias?.AddAsync(categoria);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
     }
 }
