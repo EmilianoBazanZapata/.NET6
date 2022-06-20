@@ -108,5 +108,31 @@ namespace WebApi.Controllers
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Editar(int? id) 
+        {
+            if (id == null) 
+            {
+                return View();
+            }
+
+            var categoria = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
+            return View(categoria);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Editar(Categoria categoria)
+        {
+            if (ModelState.IsValid) 
+            {
+                _context.Categorias.Update(categoria);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(categoria);
+        }
     }
 }
