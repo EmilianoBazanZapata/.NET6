@@ -20,10 +20,14 @@ namespace WebApi.Controllers
             //List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
 
             //consulta fiñltrando por fecha
-            DateTime fechaComparacion = new DateTime(2021,11,05);
-            List<Categoria> listaDeCategorias = _context.Categorias?.Where(f=>f.FechaCreacion >= fechaComparacion).OrderBy(f=>f.FechaCreacion).ToList();
+            //DateTime fechaComparacion = new DateTime(2021,11,05);
+            //List<Categoria> listaDeCategorias = _context.Categorias?.Where(f=>f.FechaCreacion >= fechaComparacion).OrderBy(f=>f.FechaCreacion).ToList();
 
-            return View(listaDeCategorias);
+            //return View(listaDeCategorias);
+
+            //selecciona
+            var categorias = _context.Categorias.Where(n=>n.Nombre == "Test 5").Select(n=>n).ToList();
+            return View(categorias);
         }
 
         [HttpGet]
