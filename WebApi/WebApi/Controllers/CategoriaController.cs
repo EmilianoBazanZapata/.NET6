@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Datos;
 using WebApi.Models;
 
@@ -17,7 +18,7 @@ namespace WebApi.Controllers
         public IActionResult Index()
         {
             //consulta inicial
-            List<Categoria> listaDeCategorias = _context.Categorias?.Take(5).ToList();
+            //List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
 
             //consulta fiñltrando por fecha
             //DateTime fechaComparacion = new DateTime(2021,11,05);
@@ -31,6 +32,12 @@ namespace WebApi.Controllers
             //var listaDeCategorias = _context.Categorias
             //                                .GroupBy(c => new {c.Activo})
             //                                .Select(c=> new { c.Key, Count = c.Count()}).ToList();
+
+            //paginando 
+            //List<Categoria> listaDeCategorias = _context.Categorias?.Take(5).ToList();
+
+            //consulta sql
+            List<Categoria> listaDeCategorias = _context.Categorias?.FromSqlRaw("SELECT * FROM CATEGORIAS").ToList();
 
             return View(listaDeCategorias);
         }
