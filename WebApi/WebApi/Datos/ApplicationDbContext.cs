@@ -26,6 +26,19 @@ namespace WebApi.Datos
         {
             modelBuilder.Entity<ArticuloEtiqueta>()
                         .HasKey(ae => new { ae.EtiquetaID, ae.ArticuloId });
+
+            //Siembra de Datos
+            var categoria = new Categoria()
+            {
+                CategoriaId = 123,
+                Nombre = "Categoria Generada en el DbContext",
+                FechaCreacion = DateTime.Now.Date,
+                Activo = true
+            };
+
+            modelBuilder.Entity<Categoria>().HasData(new Categoria[] { categoria });
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }
