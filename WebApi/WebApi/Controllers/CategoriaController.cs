@@ -17,7 +17,7 @@ namespace WebApi.Controllers
         public IActionResult Index()
         {
             //consulta inicial
-            List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
+            List<Categoria> listaDeCategorias = _context.Categorias?.Take(5).ToList();
 
             //consulta fiñltrando por fecha
             //DateTime fechaComparacion = new DateTime(2021,11,05);
