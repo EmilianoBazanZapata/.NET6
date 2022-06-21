@@ -37,9 +37,15 @@ namespace WebApi.Controllers
             //List<Categoria> listaDeCategorias = _context.Categorias?.Take(5).ToList();
 
             //consulta sql
-            List<Categoria> listaDeCategorias = _context.Categorias?.FromSqlRaw("SELECT * FROM CATEGORIAS").ToList();
+            //List<Categoria> listaDeCategorias = _context.Categorias?.FromSqlRaw("SELECT * FROM CATEGORIAS").ToList();
 
-            return View(listaDeCategorias);
+            //interpolacion de string 
+            var id = 72;
+
+            var categoria = _context.Categorias.FromSqlRaw($"SELECT * FROM CATEGORIAS WHERE CATEGORIAID = {id}");
+
+
+            return View(categoria);
         }
 
         [HttpGet]
