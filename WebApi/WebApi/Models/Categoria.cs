@@ -13,6 +13,7 @@ namespace WebApi.Models
 
         [DataType(DataType.Date)]
         public DateTime FechaCreacion { get; set; }
+        public bool Activo { get; set; }
 
         public List<Articulo> Articulo { get; set; }
     }

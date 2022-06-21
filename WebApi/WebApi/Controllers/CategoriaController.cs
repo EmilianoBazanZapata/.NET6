@@ -17,7 +17,7 @@ namespace WebApi.Controllers
         public IActionResult Index()
         {
             //consulta inicial
-            //List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
+            List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
 
             //consulta fiñltrando por fecha
             //DateTime fechaComparacion = new DateTime(2021,11,05);
@@ -25,9 +25,14 @@ namespace WebApi.Controllers
 
             //return View(listaDeCategorias);
 
-            //selecciona
-            var categorias = _context.Categorias.Where(n=>n.Nombre == "Test 5").Select(n=>n).ToList();
-            return View(categorias);
+            //selecciona uno en particular
+            //var categorias = _context.Categorias.Where(n=>n.Nombre == "Test 5").Select(n=>n).ToList();
+            //agrupa activos y los que estan inactivos
+            //var listaDeCategorias = _context.Categorias
+            //                                .GroupBy(c => new {c.Activo})
+            //                                .Select(c=> new { c.Key, Count = c.Count()}).ToList();
+
+            return View(listaDeCategorias);
         }
 
         [HttpGet]
