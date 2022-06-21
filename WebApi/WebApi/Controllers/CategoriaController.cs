@@ -40,9 +40,9 @@ namespace WebApi.Controllers
             //List<Categoria> listaDeCategorias = _context.Categorias?.FromSqlRaw("SELECT * FROM CATEGORIAS").ToList();
 
             //interpolacion de string 
-            var id = 72;
+            var id = 123;
 
-            var categoria = _context.Categorias.FromSqlRaw($"SELECT * FROM CATEGORIAS WHERE CATEGORIAID = {id}");
+            var categoria = _context.Categorias.FromSqlRaw("SELECT * FROM CATEGORIAS WHERE CATEGORIAID = {0} OR NOMBRE = {1}",id,"Categoria1");
 
 
             return View(categoria);
