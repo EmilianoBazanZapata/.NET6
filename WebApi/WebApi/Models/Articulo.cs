@@ -15,7 +15,7 @@ namespace WebApi.Models
         [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[NULL]")]
         public string Descripcion { get; set; } = string.Empty;
 
-        [Range(0.1, 0.5)]
+        [Range(1, 5)]
         public double Calificacion { get; set; }
 
         [DataType(DataType.Date)]

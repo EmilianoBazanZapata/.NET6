@@ -1,0 +1,80 @@
+﻿@model WebApi.ViewModels.ArticuloCategoriaVm
+@{
+    ViewData["Title"] = "Crear artículo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<h3 class="text-center">Crear una nueva artículo</h3>
+<form method="post" asp-action="Crear">
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12 mt-4">
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Articulo.Titulo"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Articulo.Titulo" class="form-control" />
+                    <span asp-validation-for="Articulo.Titulo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Articulo.Descripcion"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Articulo.Descripcion" class="form-control" />
+                    <span asp-validation-for="Articulo.Descripcion" class="text-danger"></span>
+                </div>
+            </div>
+
+             <div class="row">
+                <div class="col-4">
+                    <label asp-for="Articulo.Calificacion"></label>
+                </div>
+                <div class="col-8">
+                    <input  asp-for="Articulo.Calificacion"  class="form-control" />
+                    <span asp-validation-for="Articulo.Calificacion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Articulo.Fecha"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Articulo.Fecha" class="form-control" />
+                    <span asp-validation-for="Articulo.Fecha" class="text-danger"></span>
+                </div>
+            </div>
+
+             <div class="row">
+                <div class="col-4">
+                    <label asp-for="Articulo.Categoria"></label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(u => u.Articulo.CategoriaID, Model.ListaDeCategorias, "--Lista de categorías--", 
+                    new {@class = "form-control"})
+                    <span asp-validation-for="Articulo.CategoriaID" class="text-danger"></span>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    <div class="row mt-4">         
+         <div class="col-3">                  
+             <a asp-action="Index">Volver a lista</a>
+         </div>
+         <div class="col-5 offset-4">                  
+            <button type="submit" class="btn btn-primary form-control">Crear</button>
+                        &nbsp;
+         </div>
+    </div>
+</form>
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@
