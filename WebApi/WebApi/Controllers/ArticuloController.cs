@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Datos;
 using WebApi.Models;
 using WebApi.ViewModels;
@@ -17,18 +18,22 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            //sin datos relacionados
-            var articulos = _contex.Articulos.ToList();
+            //opcion sin datos relacionados
+            //var articulos = _contex.Articulos.ToList();
 
-            foreach (var articulo in articulos)
-            {
-                //opcion con datos relacionados no es eficiente
-                //articulo.Categoria = _contex.Categorias.FirstOrDefault(c => c.CategoriaId == articulo.CategoriaID);
+            //foreach (var articulo in articulos)
+            //{
+            //    //opcion con datos relacionados no es eficiente
+            //    //articulo.Categoria = _contex.Categorias.FirstOrDefault(c => c.CategoriaId == articulo.CategoriaID);
 
 
-                //carga explicita -> explicit load es mas eficiente
-                _contex.Entry(articulo).Reference(c=>c.Categoria).Load();
-            }
+            //    //carga explicita -> explicit load es mas eficiente
+            //    _contex.Entry(articulo).Reference(c=>c.Categoria).Load();
+            //}
+
+            //opcion carga diligente -> Eager Loading
+            var articulos = _contex.Articulos.Include(c=>c.Categoria).ToList();
+
             return View(articulos);
         }
 
