@@ -37,9 +37,9 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Crear(Articulo articulo) 
+        public IActionResult Crear(Articulo articulo)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 _contex.Articulos.AddAsync(articulo);
                 _contex.SaveChanges();
@@ -56,23 +56,23 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Editar(int? id) 
+        public IActionResult Editar(int? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return View();
             }
 
             ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
-            articuloCategoriaVm.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem 
+            articuloCategoriaVm.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem
             {
-                Text=i.Nombre,
-                Value  =i.CategoriaId.ToString()
+                Text = i.Nombre,
+                Value = i.CategoriaId.ToString()
             });
 
             articuloCategoriaVm.Articulo = _contex.Articulos.FirstOrDefault(c => c.ArticuloId == id);
 
-            if (articuloCategoriaVm == null) 
+            if (articuloCategoriaVm == null)
             {
                 return NotFound();
             }
@@ -88,12 +88,18 @@ namespace WebApi.Controllers
             {
                 return View(articuloVm);
             }
-            //else 
-            //{
-                _contex.Articulos.Update(articuloVm.Articulo);
-                _contex.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-           // }
+            _contex.Articulos.Update(articuloVm.Articulo);
+            _contex.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Borrar(int? id)
+        {
+            var articulo = _contex.Articulos.FirstOrDefault(a=>a.ArticuloId == id);
+            _contex.Articulos.Remove(articulo);
+            _contex.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
