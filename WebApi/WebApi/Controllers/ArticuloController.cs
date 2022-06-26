@@ -54,5 +54,46 @@ namespace WebApi.Controllers
             });
             return View(articuloCategorias);
         }
+
+        [HttpGet]
+        public IActionResult Editar(int? id) 
+        {
+            if (id == null) 
+            {
+                return View();
+            }
+
+            ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
+            articuloCategoriaVm.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem 
+            {
+                Text=i.Nombre,
+                Value  =i.CategoriaId.ToString()
+            });
+
+            articuloCategoriaVm.Articulo = _contex.Articulos.FirstOrDefault(c => c.ArticuloId == id);
+
+            if (articuloCategoriaVm == null) 
+            {
+                return NotFound();
+            }
+
+            return View(articuloCategoriaVm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Editar(ArticuloCategoriaVm articuloVm)
+        {
+            if (articuloVm.Articulo.ArticuloId == 0)
+            {
+                return View(articuloVm);
+            }
+            //else 
+            //{
+                _contex.Articulos.Update(articuloVm.Articulo);
+                _contex.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+           // }
+        }
     }
 }

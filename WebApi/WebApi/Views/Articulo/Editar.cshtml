@@ -1,13 +1,17 @@
 ﻿@model WebApi.ViewModels.ArticuloCategoriaVm
 @{
-    ViewData["Title"] = "Crear artículo";
+    ViewData["Title"] = "Editar artículo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <br />
 <br />
-<h3 class="text-center">Crear una nueva artículo</h3>
-<form method="post" asp-action="Crear">
+<h3 class="text-center">Editar artículo</h3>
+<form method="post" asp-action="Editar">
+
+    <!--Importante para editar-->
+    <input type="hidden" asp-for="Articulo.ArticuloId" />
+
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-12 mt-4">
@@ -36,7 +40,7 @@
                     <label asp-for="Articulo.Calificacion"></label>
                 </div>
                 <div class="col-8">
-                    <input  asp-for="Articulo.Calificacion"  class="form-control" />
+                    <input type="range" asp-for="Articulo.Calificacion" steps="0.01" min="0" max="5" class="form-control" />
                     <span asp-validation-for="Articulo.Calificacion" class="text-danger"></span>
                 </div>
             </div>
@@ -69,7 +73,7 @@
              <a asp-action="Index">Volver a lista</a>
          </div>
          <div class="col-5 offset-4">                  
-            <button type="submit" class="btn btn-primary form-control">Crear</button>
+            <button type="submit" class="btn btn-primary form-control">Editar</button>
                         &nbsp;
          </div>
     </div>
