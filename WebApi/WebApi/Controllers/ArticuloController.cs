@@ -17,7 +17,18 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //sin datos relacionados
             var articulos = _contex.Articulos.ToList();
+
+            foreach (var articulo in articulos)
+            {
+                //opcion con datos relacionados no es eficiente
+                //articulo.Categoria = _contex.Categorias.FirstOrDefault(c => c.CategoriaId == articulo.CategoriaID);
+
+
+                //carga explicita -> explicit load es mas eficiente
+                _contex.Entry(articulo).Reference(c=>c.Categoria).Load();
+            }
             return View(articulos);
         }
 
