@@ -60,5 +60,13 @@ namespace WebApi.Controllers
             }
             return View(usuario);
         }
+        [HttpGet]
+        public IActionResult Borrar(int? Id)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(c => c.Id == Id);
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
