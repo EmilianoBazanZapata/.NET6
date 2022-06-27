@@ -9,10 +9,10 @@ namespace WebApi.Controllers
 {
     public class ArticuloController : Controller
     {
-        private readonly ApplicationDbContext _contex;
+        private readonly ApplicationDbContext _context;
         public ArticuloController(ApplicationDbContext context)
         {
-            _contex = context;
+            _context = context;
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace WebApi.Controllers
             //}
 
             //opcion carga diligente -> Eager Loading
-            var articulos = _contex.Articulos.Include(c=>c.Categoria).ToList();
+            var articulos = _context.Articulos.Include(c=>c.Categoria).ToList();
 
             return View(articulos);
         }
@@ -42,7 +42,7 @@ namespace WebApi.Controllers
         {
             ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
 
-            articuloCategorias.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem
+            articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
                 Value = i.CategoriaId.ToString()
@@ -57,13 +57,13 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contex.Articulos.AddAsync(articulo);
-                _contex.SaveChanges();
+                _context.Articulos.AddAsync(articulo);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
 
-            articuloCategorias.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem
+            articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
                 Value = i.CategoriaId.ToString()
@@ -80,13 +80,13 @@ namespace WebApi.Controllers
             }
 
             ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
-            articuloCategoriaVm.ListaDeCategorias = _contex.Categorias.Select(i => new SelectListItem
+            articuloCategoriaVm.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
                 Value = i.CategoriaId.ToString()
             });
 
-            articuloCategoriaVm.Articulo = _contex.Articulos.FirstOrDefault(c => c.ArticuloId == id);
+            articuloCategoriaVm.Articulo = _context.Articulos.FirstOrDefault(c => c.ArticuloId == id);
 
             if (articuloCategoriaVm == null)
             {
@@ -104,17 +104,17 @@ namespace WebApi.Controllers
             {
                 return View(articuloVm);
             }
-            _contex.Articulos.Update(articuloVm.Articulo);
-            _contex.SaveChanges();
+            _context.Articulos.Update(articuloVm.Articulo);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public IActionResult Borrar(int? id)
         {
-            var articulo = _contex.Articulos.FirstOrDefault(a=>a.ArticuloId == id);
-            _contex.Articulos.Remove(articulo);
-            _contex.SaveChanges();
+            var articulo = _context.Articulos.FirstOrDefault(a=>a.ArticuloId == id);
+            _context.Articulos.Remove(articulo);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }
