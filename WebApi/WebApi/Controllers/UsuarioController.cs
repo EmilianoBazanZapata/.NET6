@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Datos;
 using WebApi.Models;
-using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -66,6 +64,54 @@ namespace WebApi.Controllers
             var usuario = _context.Usuarios.FirstOrDefault(c => c.Id == Id);
             _context.Usuarios.Remove(usuario);
             _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Detalle(int? Id)
+        {
+            if (Id == null)
+            {
+                return View();
+            }
+            var detalleUsuario = _context.Usuarios.Include(u => u.DetalleUsuario).FirstOrDefault(u => u.Id == Id);
+
+            if (detalleUsuario is null)
+            {
+                return NotFound();
+            }
+            return View(detalleUsuario);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AgregarDetalle(Usuario usuario)
+        {
+
+            if (usuario.DetalleUsuarioId != null)
+            {
+                //creamos el detalle 
+                _context.DetalleUsuarios.Add(usuario.DetalleUsuario);
+                _context.SaveChanges();
+
+                //actualizamos la relacion
+                var usuarioActual = _context.Usuarios.FirstOrDefault(u => u.Id == usuario.Id);
+
+                usuarioActual.DetalleUsuarioId = usuario.DetalleUsuarioId;
+                _context.SaveChanges();
+            }
+            else
+            {
+                var detalleUsuario = usuario.DetalleUsuario;
+                _context.DetalleUsuarios.Add(detalleUsuario);
+                _context.SaveChanges();
+
+                //actualizamos la relacion
+                var usuarioActual = _context.Usuarios.FirstOrDefault(u => u.Id == usuario.Id);
+
+                usuarioActual.DetalleUsuarioId = detalleUsuario.DetalleUsuarioId;
+                _context.SaveChanges();
+            }
+
             return RedirectToAction(nameof(Index));
         }
     }
