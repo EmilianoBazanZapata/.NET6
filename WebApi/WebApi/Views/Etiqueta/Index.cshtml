@@ -27,12 +27,12 @@
             @foreach (var etiqueta in Model)
             {
                 <tr>
-                    <td>@etiqueta.EtiquetaID</td>
+                    <td>@etiqueta.Id</td>
                      <td>@etiqueta.Titulo</td>
                     <td>@etiqueta.Fecha</td>
                     <td>
-                        <a class="btn btn-primary text-white" asp-action="Editar" asp-route-id="@etiqueta.EtiquetaID">Editar</a>
-                        <a class="btn btn-danger text-white" asp-action="Borrar" asp-route-id="@etiqueta.EtiquetaID">Borrar</a>
+                        <a class="btn btn-primary text-white" asp-action="Editar" asp-route-id="@etiqueta.Id">Editar</a>
+                        <a class="btn btn-danger text-white" asp-action="Borrar" asp-route-id="@etiqueta.Id">Borrar</a>
                     </td>
                 </tr>
             }

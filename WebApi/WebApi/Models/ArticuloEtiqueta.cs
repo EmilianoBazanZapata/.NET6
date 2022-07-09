@@ -9,7 +9,7 @@ namespace WebApi.Models
         [ForeignKey("Etiqueta")]
         public int EtiquetaID { get; set; }
 
-        public Articulo? Articulo { get; set; }  
-        public Etiqueta? Etiqueta { get; set; }
+        public Articulo Articulo { get; set; }  
+        public Etiqueta Etiqueta { get; set; }
     }
 }

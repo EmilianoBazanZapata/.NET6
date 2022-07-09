@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Datos;
+using WebApi.Models;
+using WebApi.Repository;
+using WebApi.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IRepository<Articulo>, Repository<Articulo>>();
 
 //Configuramos la Conexion a Sql Server
 
@@ -9,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
 
+//builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

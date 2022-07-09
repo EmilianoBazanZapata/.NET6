@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Models
 {
-    public class Articulo
+    public class Articulo : EntityBase
     {
-        public int ArticuloId { get; set; }
 
         [Required(ErrorMessage = "Es necesario ingresar un Titulo")]
         [MaxLength(20)]
@@ -25,9 +24,9 @@ namespace WebApi.Models
         //relacion 
         [ForeignKey("Categoria")]
         public int CategoriaID { get; set; }
-        public Categoria? Categoria { get; set; }
+        public Categoria Categoria { get; set; }
 
         //para relacion muchos a muchos
-        public ICollection<ArticuloEtiqueta>? ArticuloEtiqueta { get; set; }
+        public ICollection<ArticuloEtiqueta> ArticuloEtiqueta { get; set; }
     }
 }

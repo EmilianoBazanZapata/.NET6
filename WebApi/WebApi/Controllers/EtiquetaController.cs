@@ -12,7 +12,7 @@ namespace WebApi.Controllers
             _context = context;
         }
         public IActionResult Index()
-        { 
+        {
             var etiquetas = _context.Etiquetas.ToList();
             return View(etiquetas);
         }
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
                 return View();
             }
 
-            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == id);
+            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.Id == id);
             return View(etiqueta);
         }
 
@@ -64,7 +64,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Borrar(int? Id)
         {
-            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == Id);
+            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.Id == Id);
             _context.Etiquetas.Remove(etiqueta);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));

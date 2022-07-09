@@ -2,10 +2,8 @@
 
 namespace WebApi.Models
 {
-    public class Categoria
+    public class Categoria : EntityBase
     {
-        public int CategoriaId { get; set; }
-
         [Required]
         [MaxLength(50)]
         [DisplayFormat(ConvertEmptyStringToNull = true,NullDisplayText = "[NULL]")]

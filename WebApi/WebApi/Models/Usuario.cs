@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Models
 {
-    public class Usuario
+    public class Usuario  :EntityBase
     {
-        public int Id { get; set; }
         public string Nombre { get; set; }
 
         [MaxLength(50)]

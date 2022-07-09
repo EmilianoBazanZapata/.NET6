@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using WebApi.Datos;
 using WebApi.Models;
+using WebApi.Repository.Interfaces;
 using WebApi.ViewModels;
 
 namespace WebApi.Controllers
@@ -10,29 +12,23 @@ namespace WebApi.Controllers
     public class ArticuloController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ArticuloController(ApplicationDbContext context)
+        private readonly IRepository<Articulo> _repository;
+        private List<Expression<Func<Articulo, object>>> a;
+
+        public ArticuloController(ApplicationDbContext context,
+                                  IRepository<Articulo> repository)
         {
             _context = context;
+            _repository = repository;
+
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //opcion sin datos relacionados
-            //var articulos = _contex.Articulos.ToList();
-
-            //foreach (var articulo in articulos)
-            //{
-            //    //opcion con datos relacionados no es eficiente
-            //    //articulo.Categoria = _contex.Categorias.FirstOrDefault(c => c.CategoriaId == articulo.CategoriaID);
-
-
-            //    //carga explicita -> explicit load es mas eficiente
-            //    _contex.Entry(articulo).Reference(c=>c.Categoria).Load();
-            //}
-
-            //opcion carga diligente -> Eager Loading
-            var articulos = _context.Articulos.Include(c=>c.Categoria).ToList();
+            var articulos = await _repository.GetQueryAsync<Articulo>(
+                    predicate: a => a.SoftDelete == false,
+                    include: a => a.Include(a => a.Categoria));
 
             return View(articulos);
         }
@@ -45,7 +41,7 @@ namespace WebApi.Controllers
             articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
-                Value = i.CategoriaId.ToString()
+                Value = i.Id.ToString()
             });
 
             return View(articuloCategorias);
@@ -66,7 +62,7 @@ namespace WebApi.Controllers
             articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
-                Value = i.CategoriaId.ToString()
+                Value = i.Id.ToString()
             });
             return View(articuloCategorias);
         }
@@ -83,10 +79,10 @@ namespace WebApi.Controllers
             articuloCategoriaVm.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
             {
                 Text = i.Nombre,
-                Value = i.CategoriaId.ToString()
+                Value = i.Id.ToString()
             });
 
-            articuloCategoriaVm.Articulo = _context.Articulos.FirstOrDefault(c => c.ArticuloId == id);
+            articuloCategoriaVm.Articulo = _context.Articulos.FirstOrDefault(c => c.Id == id);
 
             if (articuloCategoriaVm == null)
             {
@@ -100,7 +96,7 @@ namespace WebApi.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Editar(ArticuloCategoriaVm articuloVm)
         {
-            if (articuloVm.Articulo.ArticuloId == 0)
+            if (articuloVm.Articulo.Id == 0)
             {
                 return View(articuloVm);
             }
@@ -112,7 +108,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Borrar(int? id)
         {
-            var articulo = _context.Articulos.FirstOrDefault(a=>a.ArticuloId == id);
+            var articulo = _context.Articulos.FirstOrDefault(a => a.Id == id);
             _context.Articulos.Remove(articulo);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));

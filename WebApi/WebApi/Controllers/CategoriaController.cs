@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         public IActionResult Index()
         {
             //consulta inicial
-            //List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
+            List<Categoria> listaDeCategorias = _context.Categorias?.ToList();
 
             //consulta fiñltrando por fecha
             //DateTime fechaComparacion = new DateTime(2021,11,05);
@@ -42,10 +42,10 @@ namespace WebApi.Controllers
             //interpolacion de string 
             var id = 123;
 
-            var categoria = _context.Categorias.FromSqlRaw("SELECT * FROM CATEGORIAS WHERE CATEGORIAID = {0} OR NOMBRE = {1}",id,"Categoria1");
+            var categoria = _context.Categorias.FromSqlRaw("SELECT * FROM CATEGORIAS WHERE Id = {0} OR NOMBRE = {1}", id, "Categoria1");
 
 
-            return View(categoria);
+            return View(listaDeCategorias);
         }
 
         [HttpGet]
@@ -108,24 +108,24 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult VistaCrearMultipleCategoria() 
+        public IActionResult VistaCrearMultipleCategoria()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CrearMultipleOpcionFormulario() 
+        public IActionResult CrearMultipleOpcionFormulario()
         {
             string categoriaForm = Request.Form["Nombre"];
-            var listaCategorias = from val 
-                                  in categoriaForm.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries) 
+            var listaCategorias = from val
+                                  in categoriaForm.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                                   select (val);
 
             List<Categoria> categorias = new List<Categoria>();
 
             foreach (var categoria in listaCategorias)
             {
-                categorias.Add(new Categoria 
+                categorias.Add(new Categoria
                 {
                     Nombre = categoria
                 });
@@ -136,14 +136,14 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Editar(int? id) 
+        public IActionResult Editar(int? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return View();
             }
 
-            var categoria = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
+            var categoria = _context.Categorias.FirstOrDefault(c => c.Id == id);
             return View(categoria);
         }
 
@@ -152,7 +152,7 @@ namespace WebApi.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Editar(Categoria categoria)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 _context.Categorias.Update(categoria);
                 _context.SaveChanges();
@@ -162,9 +162,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Borrar(int? Id) 
+        public IActionResult Borrar(int? Id)
         {
-            var Categoria = _context.Categorias.FirstOrDefault(c=>c.CategoriaId == Id);
+            var Categoria = _context.Categorias.FirstOrDefault(c => c.Id == Id);
             _context.Categorias.Remove(Categoria);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -173,7 +173,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult BorrarMultiple2()
         {
-            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.CategoriaId).Take(2); 
+            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.Id).Take(2);
             _context.Categorias.RemoveRange(categorias);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -182,7 +182,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult BorrarMultiple5()
         {
-            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.CategoriaId).Take(5);
+            IEnumerable<Categoria> categorias = _context.Categorias.OrderByDescending(c => c.Id).Take(5);
             _context.Categorias.RemoveRange(categorias);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));

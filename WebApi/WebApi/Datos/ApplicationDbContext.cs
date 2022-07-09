@@ -15,11 +15,11 @@ namespace WebApi.Datos
         //1- cuando se crea una nueva clase
         //2-cuando agregue una nueva propiedad
         //3-cuando modifique un valor de campo en la clase
-        public DbSet<Categoria>? Categorias { get; set; }
-        public DbSet<Usuario>? Usuarios { get; set; }
-        public DbSet<Articulo>? Articulos { get; set; }
-        public DbSet<DetalleUsuario>? DetalleUsuarios { get; set; }
-        public DbSet<Etiqueta>? Etiquetas { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Articulo> Articulos { get; set; }
+        public DbSet<DetalleUsuario> DetalleUsuarios { get; set; }
+        public DbSet<Etiqueta> Etiquetas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace WebApi.Datos
             //Siembra de Datos
             var categoria = new Categoria()
             {
-                CategoriaId = 123,
+                Id = 123,
                 Nombre = "Categoria Generada en el DbContext",
                 FechaCreacion = DateTime.Now.Date,
                 Activo = true
