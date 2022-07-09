@@ -19,11 +19,13 @@ namespace WebApi.Repository
         public async Task CreateAsync<TEntity>(TEntity entity) where TEntity : class
         {
             await _dbContext.AddAsync(entity);
+            _dbContext.SaveChanges();
         }
 
         public async Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public Task<IQueryable<TEntity>> GetQueryAsync<TEntity>(Expression<Func<TEntity, bool>> predicate = null,
@@ -90,6 +92,7 @@ namespace WebApi.Repository
         public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
     }
 }

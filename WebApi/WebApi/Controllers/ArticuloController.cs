@@ -11,14 +11,10 @@ namespace WebApi.Controllers
 {
     public class ArticuloController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IRepository<Articulo> _repository;
-        private List<Expression<Func<Articulo, object>>> a;
 
-        public ArticuloController(ApplicationDbContext context,
-                                  IRepository<Articulo> repository)
+        public ArticuloController(IRepository<Articulo> repository)
         {
-            _context = context;
             _repository = repository;
 
         }
@@ -34,41 +30,37 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Crear()
+        public async Task<IActionResult> Crear()
         {
             ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
 
-            articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
-            {
-                Text = i.Nombre,
-                Value = i.Id.ToString()
-            });
+            var categorias = await _repository.GetQueryAsync<Categoria>();
+
+            articuloCategorias.ListaDeCategorias = categorias.Select(c=> new SelectListItem { Value=c.Id.ToString(), Text = c.Nombre }).ToList();
 
             return View(articuloCategorias);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Crear(Articulo articulo)
+        public async Task<IActionResult> Crear(Articulo articulo)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Articulos.AddAsync(articulo);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
-
-            articuloCategorias.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
-            {
-                Text = i.Nombre,
-                Value = i.Id.ToString()
-            });
-            return View(articuloCategorias);
+            await _repository.CreateAsync(articulo);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-        public IActionResult Editar(int? id)
+        public async Task<IActionResult> Borrar(int id)
+        {
+            var articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
+            articulo.SoftDelete = true;
+            articulo.LastModified = DateTime.Now.Date;
+            await _repository.UpdateAsync(articulo);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -76,13 +68,11 @@ namespace WebApi.Controllers
             }
 
             ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
-            articuloCategoriaVm.ListaDeCategorias = _context.Categorias.Select(i => new SelectListItem
-            {
-                Text = i.Nombre,
-                Value = i.Id.ToString()
-            });
+            var categorias = await _repository.GetQueryAsync<Categoria>();
 
-            articuloCategoriaVm.Articulo = _context.Articulos.FirstOrDefault(c => c.Id == id);
+            articuloCategoriaVm.ListaDeCategorias = categorias.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nombre }).ToList();
+
+            articuloCategoriaVm.Articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
 
             if (articuloCategoriaVm == null)
             {
@@ -100,17 +90,7 @@ namespace WebApi.Controllers
             {
                 return View(articuloVm);
             }
-            _context.Articulos.Update(articuloVm.Articulo);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public IActionResult Borrar(int? id)
-        {
-            var articulo = _context.Articulos.FirstOrDefault(a => a.Id == id);
-            _context.Articulos.Remove(articulo);
-            _context.SaveChanges();
+            _repository.UpdateAsync(articuloVm.Articulo);
             return RedirectToAction(nameof(Index));
         }
     }
