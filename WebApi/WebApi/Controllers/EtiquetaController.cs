@@ -34,5 +34,33 @@ namespace WebApi.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Editar(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+
+            var categoria = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == id);
+            return View(categoria);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Editar(Etiqueta etiqueta)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Etiquetas.Update(etiqueta);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(etiqueta);
+        }
+
+
     }
 }
