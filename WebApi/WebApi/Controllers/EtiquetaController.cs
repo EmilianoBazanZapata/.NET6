@@ -43,8 +43,8 @@ namespace WebApi.Controllers
                 return View();
             }
 
-            var categoria = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == id);
-            return View(categoria);
+            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == id);
+            return View(etiqueta);
         }
 
 
@@ -61,6 +61,13 @@ namespace WebApi.Controllers
             return View(etiqueta);
         }
 
-
+        [HttpGet]
+        public IActionResult Borrar(int? Id)
+        {
+            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.EtiquetaID == Id);
+            _context.Etiquetas.Remove(etiqueta);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
