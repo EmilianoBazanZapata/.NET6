@@ -20,7 +20,6 @@
     {
         <table class="table table-striped border">
             <tr>
-                <th>@Html.DisplayNameFor(a => a.Id)</th>
                 <th>@Html.DisplayNameFor(a => a.Titulo)</th>
                 <th>@Html.DisplayNameFor(a => a.Descripcion)</th>
                 <th>@Html.DisplayNameFor(a => a.Fecha)</th>
@@ -31,7 +30,6 @@
             @foreach (var articulo in Model)
             {
                 <tr>
-                    <td>@articulo.Id</td>
                     <td>@articulo.Titulo</td>
                     <td>@articulo.Descripcion</td>
                     <td>@articulo.Fecha</td>

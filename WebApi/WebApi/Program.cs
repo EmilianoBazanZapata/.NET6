@@ -3,6 +3,7 @@ using WebApi.Datos;
 using WebApi.Models;
 using WebApi.Repository;
 using WebApi.Repository.Interfaces;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddScoped<IRepository<Articulo>, Repository<Articulo>>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
+builder.Services.AddScoped<ArticuloService, ArticuloService>();
 
 //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 

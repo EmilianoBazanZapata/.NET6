@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using WebApi.Datos;
 using WebApi.Models;
 using WebApi.Repository.Interfaces;
+using WebApi.Services;
 using WebApi.ViewModels;
 
 namespace WebApi.Controllers
@@ -12,32 +9,26 @@ namespace WebApi.Controllers
     public class ArticuloController : Controller
     {
         private readonly IRepository<Articulo> _repository;
+        private readonly ArticuloService _articuloService;
 
-        public ArticuloController(IRepository<Articulo> repository)
+        public ArticuloController(IRepository<Articulo> repository,
+                                  ArticuloService articuloService)
         {
             _repository = repository;
-
+            _articuloService = articuloService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var articulos = await _repository.GetQueryAsync<Articulo>(
-                    predicate: a => a.SoftDelete == false,
-                    include: a => a.Include(a => a.Categoria));
-
+            var articulos = await _articuloService.ListadoDeArticulos();
             return View(articulos);
         }
 
         [HttpGet]
         public async Task<IActionResult> Crear()
         {
-            ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
-
-            var categorias = await _repository.GetQueryAsync<Categoria>();
-
-            articuloCategorias.ListaDeCategorias = categorias.Select(c=> new SelectListItem { Value=c.Id.ToString(), Text = c.Nombre }).ToList();
-
+            var articuloCategorias = await _articuloService.CrearArticulo();
             return View(articuloCategorias);
         }
 
@@ -45,40 +36,25 @@ namespace WebApi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Articulo articulo)
         {
-            await _repository.CreateAsync(articulo);
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid) 
+            {
+                await _repository.CreateAsync(articulo);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(articulo); 
         }
 
         [HttpGet]
         public async Task<IActionResult> Borrar(int id)
         {
-            var articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
-            articulo.SoftDelete = true;
-            articulo.LastModified = DateTime.Now.Date;
-            await _repository.UpdateAsync(articulo);
+            await _articuloService.BorrarArticulo(id);  
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Editar(int? id)
         {
-            if (id == null)
-            {
-                return View();
-            }
-
-            ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
-            var categorias = await _repository.GetQueryAsync<Categoria>();
-
-            articuloCategoriaVm.ListaDeCategorias = categorias.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nombre }).ToList();
-
-            articuloCategoriaVm.Articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
-
-            if (articuloCategoriaVm == null)
-            {
-                return NotFound();
-            }
-
+            var articuloCategoriaVm = await _articuloService.EditarArticulo(id);
             return View(articuloCategoriaVm);
         }
 
