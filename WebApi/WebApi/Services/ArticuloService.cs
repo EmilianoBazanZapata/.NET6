@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
 using WebApi.Repository.Interfaces;
 using WebApi.ViewModels;
-using System.IdentityModel;
 using Microsoft.IdentityModel.SecurityTokenService;
 
 namespace WebApi.Services
@@ -39,7 +38,7 @@ namespace WebApi.Services
         }
         public async Task<IActionResult> BorrarArticulo(int id)
         {
-            var articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
+            var articulo = await _repository.GetByIdAsync<Articulo>(id);
 
             if (articulo == null)
 
@@ -63,7 +62,7 @@ namespace WebApi.Services
 
         public async Task<ArticuloCategoriaVm> EditarArticulo(int? id)
         {
-            var articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
+            var articulo = await _repository.GetByIdAsync<Articulo>(id.Value);
 
             if (articulo == null)
 
