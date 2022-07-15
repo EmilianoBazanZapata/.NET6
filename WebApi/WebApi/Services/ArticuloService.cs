@@ -48,7 +48,7 @@ namespace WebApi.Services
                 {
                     Status = 200,
                     Titulo = "Felicitaciones",
-                    Cuerpo = $"Se creo el Articulo: {articulo.Titulo}, exitosamente."
+                    Cuerpo = $"Se creó el Articulo: {articulo.Titulo}, exitosamente."
                 };
             }
             catch (WebException ex)
@@ -87,7 +87,7 @@ namespace WebApi.Services
                 {
                     Status = 200,
                     Titulo = "Felicitaciones",
-                    Cuerpo = $"Se creo el Articulo: {articulo.Titulo}, exitosamente."
+                    Cuerpo = $"Se Eliminó el Articulo: {articulo.Titulo}, exitosamente."
                 };
             }
             catch (WebException ex)

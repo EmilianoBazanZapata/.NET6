@@ -16,6 +16,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString
 
 builder.Services.AddScoped<ArticuloService, ArticuloService>();
 builder.Services.AddScoped<CategoriaService, CategoriaService>();
+builder.Services.AddScoped<EtiquetaService, EtiquetaService>();
 
 
 // Add services to the container.

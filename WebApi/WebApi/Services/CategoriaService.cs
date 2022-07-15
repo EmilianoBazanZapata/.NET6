@@ -34,7 +34,7 @@ namespace WebApi.Services
                 {
                     Status = 200,
                     Titulo = "Felicitaciones",
-                    Cuerpo = $"Se creo la Categoria: {categoria.Nombre}, exitosamente."
+                    Cuerpo = $"Se creó la Categoria: {categoria.Nombre}, exitosamente."
                 };
             }
             catch (WebException ex)

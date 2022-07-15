@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApi.Datos;
 using WebApi.Models;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
     public class EtiquetaController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public EtiquetaController(ApplicationDbContext context)
+        private readonly EtiquetaService _etiquetaService;
+        public EtiquetaController(EtiquetaService etiquetaService)
         {
-            _context = context;
+            _etiquetaService = etiquetaService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var etiquetas = _context.Etiquetas.ToList();
+            var etiquetas = await _etiquetaService.LitadoDeEtiquetas();
             return View(etiquetas);
         }
 
@@ -22,51 +22,43 @@ namespace WebApi.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Crear(Etiqueta etiqueta)
+        public async Task<IActionResult> Crear(Etiqueta etiqueta)
         {
             if (ModelState.IsValid)
             {
-                _context.Etiquetas?.AddAsync(etiqueta);
-                _context.SaveChangesAsync();
+                await _etiquetaService.CrearEtiqueta(etiqueta);
                 return RedirectToAction(nameof(Index));
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Editar(int? id)
+        public async Task<IActionResult> Editar(int id)
         {
-            if (id == null)
-            {
-                return View();
-            }
-
-            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.Id == id);
+            var etiqueta = await _etiquetaService.EditarEtiqueta(id);
             return View(etiqueta);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Editar(Etiqueta etiqueta)
+        public async Task<IActionResult> Editar(Etiqueta etiqueta)
         {
             if (ModelState.IsValid)
             {
-                _context.Etiquetas.Update(etiqueta);
-                _context.SaveChanges();
+                await _etiquetaService.EditarEtiqueta(etiqueta);
                 return RedirectToAction(nameof(Index));
             }
             return View(etiqueta);
         }
 
         [HttpGet]
-        public IActionResult Borrar(int? Id)
+        public async Task<IActionResult> Borrar(int id)
         {
-            var etiqueta = _context.Etiquetas.FirstOrDefault(c => c.Id == Id);
-            _context.Etiquetas.Remove(etiqueta);
-            _context.SaveChanges();
+            await _etiquetaService.BorrarEtiqueta(id);
             return RedirectToAction(nameof(Index));
         }
     }
