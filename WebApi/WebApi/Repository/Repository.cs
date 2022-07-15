@@ -8,7 +8,7 @@ using WebApi.Repository.Interfaces;
 
 namespace WebApi.Repository
 {
-    public class Repository<T> : IRepository<T> where T : EntityBase
+    public class Repository<T> : IRepository where T : EntityBase
     {
         protected ApplicationDbContext _dbContext { get; set; }
         public Repository(ApplicationDbContext dbContext)

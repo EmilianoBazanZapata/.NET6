@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
 using WebApi.Repository.Interfaces;
-using WebApi.ViewModels;
 using Microsoft.IdentityModel.SecurityTokenService;
+using WebApi.ViewModels.Request;
+using WebApi.ViewModels.Response;
+using System.Net;
 
 namespace WebApi.Services
 {
     public class ArticuloService
     {
-        private readonly IRepository<Articulo> _repository;
-        public ArticuloService(IRepository<Articulo> repository)
+        private readonly IRepository _repository;
+        public ArticuloService(IRepository repository)
         {
             _repository = repository;
 
@@ -26,9 +27,9 @@ namespace WebApi.Services
             return articulos;
         }
 
-        public async Task<ArticuloCategoriaVm> CrearArticulo()
+        public async Task<ArticuloCategoriaViewModel> CrearArticulo()
         {
-            ArticuloCategoriaVm articuloCategorias = new ArticuloCategoriaVm();
+            ArticuloCategoriaViewModel articuloCategorias = new ArticuloCategoriaViewModel();
 
             var categorias = await _repository.GetQueryAsync<Categoria>();
 
@@ -36,48 +37,122 @@ namespace WebApi.Services
 
             return articuloCategorias;
         }
-        public async Task<IActionResult> BorrarArticulo(int id)
+
+        public async Task<GenericViewModelResponse> CrearArticulo(Articulo articulo)
         {
-            var articulo = await _repository.GetByIdAsync<Articulo>(id);
-
-            if (articulo == null)
-
-                throw new BadRequestException($"El articulo con el Id {id} no existe.");
-
-            if (articulo.SoftDelete == true)
-
-                throw new BadRequestException($"El articulo {articulo.Titulo} ya esta dado de baja.");
-
-            articulo.SoftDelete = true;
-
-            articulo.LastModified = DateTime.Now.Date;
-
-            await _repository.UpdateAsync(articulo);
-
-            return new BadRequestObjectResult(new
+            try
             {
-                message = $"El articulo {articulo.Titulo} ya se elimino."
-            });
+                await _repository.CreateAsync(articulo);
+
+                return new GenericViewModelResponse()
+                {
+                    Status = 200,
+                    Titulo = "Felicitaciones",
+                    Cuerpo = $"Se creo el Articulo: {articulo.Titulo}, exitosamente."
+                };
+            }
+            catch (WebException ex)
+            {
+
+                return new GenericViewModelResponse()
+                {
+                    Status = (int)((HttpWebResponse)ex.Response).StatusCode,
+                    Titulo = "Ocurrio un Error",
+                    Cuerpo = ex.Message.ToString()
+                };
+            }
         }
 
-        public async Task<ArticuloCategoriaVm> EditarArticulo(int? id)
+        public async Task<GenericViewModelResponse> BorrarArticulo(int id)
         {
+            try
+            {
+                var articulo = await _repository.GetByIdAsync<Articulo>(id);
+
+                if (articulo == null)
+
+                    throw new BadRequestException($"El articulo con el Id {id} no existe.");
+
+                if (articulo.SoftDelete == true)
+
+                    throw new BadRequestException($"El articulo {articulo.Titulo} ya esta dado de baja.");
+
+                articulo.SoftDelete = true;
+
+                articulo.LastModified = DateTime.Now.Date;
+
+                await _repository.UpdateAsync(articulo);
+
+                return new GenericViewModelResponse()
+                {
+                    Status = 200,
+                    Titulo = "Felicitaciones",
+                    Cuerpo = $"Se creo el Articulo: {articulo.Titulo}, exitosamente."
+                };
+            }
+            catch (WebException ex)
+            {
+
+                return new GenericViewModelResponse()
+                {
+                    Status = (int)((HttpWebResponse)ex.Response).StatusCode,
+                    Titulo = "Ocurrio un Error",
+                    Cuerpo = ex.Message.ToString()
+                };
+            }
+        }
+
+        public async Task<ArticuloCategoriaViewModel> EditarArticulo(int? id)
+        {
+
             var articulo = await _repository.GetByIdAsync<Articulo>(id.Value);
 
             if (articulo == null)
-
                 throw new BadRequestException($"El articulo con el Id {id} no existe.");
 
 
-            ArticuloCategoriaVm articuloCategoriaVm = new ArticuloCategoriaVm();
+            ArticuloCategoriaViewModel articuloCategoriaVm = new ArticuloCategoriaViewModel();
 
             var categorias = await _repository.GetQueryAsync<Categoria>();
+
+            if (!categorias.Any())
+                throw new BadRequestException($"No hay Categorias disponibles para actualizar el Articulo");
 
             articuloCategoriaVm.ListaDeCategorias = categorias.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nombre }).ToList();
 
             articuloCategoriaVm.Articulo = await _repository.FindFirstAsync<Articulo>(a => a.Id == id);
 
             return articuloCategoriaVm;
+        }
+
+        public async Task<GenericViewModelResponse> EditarArticulo(ArticuloCategoriaViewModel articuloVm)
+        {
+
+            try
+            {
+                if (articuloVm.Articulo.Id == 0)
+                    throw new BadRequestException($"No se puede actualizar un articulo con Id 0");
+
+                await _repository.UpdateAsync(articuloVm.Articulo);
+
+                return new GenericViewModelResponse()
+                {
+                    Status = 200,
+                    Titulo = "Felicitaciones",
+                    Cuerpo = $"Se Actualizó el Articulo: {articuloVm.Articulo.Titulo}, exitosamente."
+                };
+
+            }
+            catch (WebException ex)
+            {
+
+                return new GenericViewModelResponse()
+                {
+                    Status = (int)((HttpWebResponse)ex.Response).StatusCode,
+                    Titulo = "Ocurrio un Error",
+                    Cuerpo = ex.Message.ToString()
+                };
+            }
         }
     }
 }

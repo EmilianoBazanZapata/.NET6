@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace WebApi.Repository.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository
     {
         Task CreateAsync<TEntity>(TEntity entity) where TEntity : class;
         Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class;

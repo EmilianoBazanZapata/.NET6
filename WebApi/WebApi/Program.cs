@@ -7,7 +7,7 @@ using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IRepository<Articulo>, Repository<Articulo>>();
+builder.Services.AddScoped<IRepository, Repository<Articulo>>();
 
 //Configuramos la Conexion a Sql Server
 
@@ -17,7 +17,6 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString
 builder.Services.AddScoped<ArticuloService, ArticuloService>();
 builder.Services.AddScoped<CategoriaService, CategoriaService>();
 
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

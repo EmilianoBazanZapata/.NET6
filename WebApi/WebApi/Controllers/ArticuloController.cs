@@ -1,20 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
-using WebApi.Repository.Interfaces;
 using WebApi.Services;
-using WebApi.ViewModels;
+using WebApi.ViewModels.Request;
 
 namespace WebApi.Controllers
 {
     public class ArticuloController : Controller
     {
-        private readonly IRepository<Articulo> _repository;
         private readonly ArticuloService _articuloService;
 
-        public ArticuloController(IRepository<Articulo> repository,
-                                  ArticuloService articuloService)
+        public ArticuloController(ArticuloService articuloService)
         {
-            _repository = repository;
             _articuloService = articuloService;
         }
 
@@ -36,18 +32,18 @@ namespace WebApi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Articulo articulo)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                await _repository.CreateAsync(articulo);
+                await _articuloService.CrearArticulo(articulo);
                 return RedirectToAction(nameof(Index));
             }
-            return View(articulo); 
+            return View(articulo);
         }
 
         [HttpGet]
         public async Task<IActionResult> Borrar(int id)
         {
-            await _articuloService.BorrarArticulo(id);  
+            await _articuloService.BorrarArticulo(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -60,14 +56,14 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Editar(ArticuloCategoriaVm articuloVm)
+        public async Task<IActionResult> Editar(ArticuloCategoriaViewModel articuloVm)
         {
-            if (articuloVm.Articulo.Id == 0)
+            if (ModelState.IsValid)
             {
-                return View(articuloVm);
+                await _articuloService.EditarArticulo(articuloVm);
+                return RedirectToAction(nameof(Index));
             }
-            _repository.UpdateAsync(articuloVm.Articulo);
-            return RedirectToAction(nameof(Index));
+            return View(articuloVm);
         }
     }
 }

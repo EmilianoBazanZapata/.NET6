@@ -8,18 +8,12 @@ namespace WebApi.Controllers
 {
     public class CategoriaController : Controller
     {
-        public readonly ApplicationDbContext _context;
         public readonly CategoriaService _categoriaService;
-        public readonly IRepository<Categoria> _repository;
 
         //accedemos al DbContext
-        public CategoriaController(ApplicationDbContext context,
-                                   CategoriaService categoriaService,
-                                   IRepository<Categoria> repository)
+        public CategoriaController(CategoriaService categoriaService)
         {
-            _context = context;
             _categoriaService = categoriaService;
-            _repository = repository;
         }
 
         [HttpGet]
@@ -41,7 +35,7 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.CreateAsync(categoria);
+                await _categoriaService.AgregarCategoria(categoria);
                 return RedirectToAction(nameof(Index));
             }
             return View();
