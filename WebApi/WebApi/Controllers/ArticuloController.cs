@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebApi.Models;
 using WebApi.Services;
 using WebApi.ViewModels.Request;
@@ -34,7 +35,10 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _articuloService.CrearArticulo(articulo);
+                var result = await _articuloService.CrearArticulo(articulo);
+
+                TempData["alerta"] = JsonConvert.SerializeObject(result);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(articulo);

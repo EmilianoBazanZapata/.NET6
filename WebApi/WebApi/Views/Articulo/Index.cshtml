@@ -1,5 +1,6 @@
-﻿
-@model IEnumerable<WebApi.Models.Articulo>
+﻿@model IEnumerable<WebApi.Models.Articulo>
+@using WebApi.ViewModels.Response
+@using Newtonsoft.Json
 @{
     ViewData["Title"] = "Lista de artículos";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,13 +10,31 @@
     <div class="col-4">
         <h3>Lista de artículos</h3>
     </div>
-     <div class="col-3">
-         <a asp-action="Crear" class="btn btn-primary form-control">Crear artículo</a>
-    </div>   
+    <div class="col-3">
+        <a asp-action="Crear" class="btn btn-primary form-control">Crear artículo</a>
+    </div>
 </div>
 
-
 <div>
+    @if (TempData["alerta"] != null)
+    {
+        var alerta = JsonConvert.DeserializeObject<GenericViewModelResponse>((string)TempData["alerta"]);
+
+        if (alerta.Status == 200)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>@alerta.Titulo</strong> @alerta.Cuerpo
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else
+        {
+           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>@alerta.Titulo</strong> @alerta.Cuerpo
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div> 
+        }
+    }
     @if (Model.Count() > 0)
     {
         <table class="table table-striped border">
@@ -37,7 +56,7 @@
                     <td>@articulo.Categoria.Nombre</td>
                     <td>
                         <a class="btn btn-primary text-white" asp-action="Editar" asp-route-id="@articulo.Id">Editar</a>
-                        <a class="btn btn-success text-white" asp-action="AdministrarEtiquetas" asp-route-id="@articulo.Id">Administrar Etiquetas</a>
+                        <a class="btn btn-success text-white" asp-action="AdministrarEtiquetas" asp-route-id="@articulo.Id">Etiquetas</a>
                         <a class="btn btn-danger text-white" asp-action="Borrar" asp-route-id="@articulo.Id">Borrar</a>
                     </td>
                 </tr>
@@ -48,4 +67,6 @@
     {
         <p>No hay artículos</p>
     }
+    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
 </div>

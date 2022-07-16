@@ -11,37 +11,28 @@
     <!--Importante para editar-->
     <input type="hidden" asp-for="Id" />
 
+    <span asp-validation-for="Nombre" class="text-danger"></span>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Nombre" asp-for="Nombre">
+        <label for="floatingInput">Nombre</label>
+    </div>
+
     <div class="row">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-12 mt-4">
-            <div class="row">
-                <div class="col-4">
-                    <label asp-for="Nombre"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Nombre" class="form-control" />
-                    <span asp-validation-for="Nombre" class="text-danger"></span>
-                </div>
-            </div>
+        <div class="col-4">
+            <label>Estado de la Categoría</label>
+        </div>
+        <div class="col-8">
+            <p>
+                <input type="radio" asp-for="Activo" value="false" />
+                Inactivo
+            </p>
+            <span asp-validation-for="Activo" class="text-danger"></span>
 
-            <div class="row">
-                <div class="col-4">
-                    <label asp-for="Activo"></label>
-                </div>
-                <div class="col-8">
-                    <p>
-                        <input type="radio" asp-for="Activo" value="false" />
-                        Inactivo
-                    </p>
-                    <span asp-validation-for="Activo" class="text-danger"></span>
-
-                    <p>
-                        <input type="radio" asp-for="Activo" value="true" />
-                        Activo
-                    </p>
-                    <span asp-validation-for="Activo" class="text-danger"></span>
-                </div>
-            </div>
+            <p>
+                <input type="radio" asp-for="Activo" value="true" />
+                Activo
+            </p>
+            <span asp-validation-for="Activo" class="text-danger"></span>
         </div>
     </div>
     <div class="row mt-4">
