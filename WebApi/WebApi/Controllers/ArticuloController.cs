@@ -47,7 +47,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Borrar(int id)
         {
-            await _articuloService.BorrarArticulo(id);
+            var result = await _articuloService.BorrarArticulo(id);
+            TempData["alerta"] = JsonConvert.SerializeObject(result);
             return RedirectToAction(nameof(Index));
         }
 
@@ -64,7 +65,8 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _articuloService.EditarArticulo(articuloVm);
+                var result = await _articuloService.EditarArticulo(articuloVm);
+                TempData["alerta"] = JsonConvert.SerializeObject(result);
                 return RedirectToAction(nameof(Index));
             }
             return View(articuloVm);

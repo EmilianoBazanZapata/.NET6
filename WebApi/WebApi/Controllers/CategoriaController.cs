@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebApi.Datos;
 using WebApi.Models;
 using WebApi.Repository.Interfaces;
@@ -35,7 +36,8 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _categoriaService.AgregarCategoria(categoria);
+                var result = await _categoriaService.AgregarCategoria(categoria);
+                TempData["alerta"] = JsonConvert.SerializeObject(result);
                 return RedirectToAction(nameof(Index));
             }
             return View();
@@ -55,7 +57,8 @@ namespace WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _categoriaService.EditarCategoria(categoria);
+                var result = await _categoriaService.EditarCategoria(categoria);
+                TempData["alerta"] = JsonConvert.SerializeObject(result);
                 return RedirectToAction(nameof(Index));
             }
             return View(categoria);
