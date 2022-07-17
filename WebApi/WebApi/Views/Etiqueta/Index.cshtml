@@ -1,6 +1,7 @@
-﻿@model IEnumerable<WebApi.Models.Etiqueta>
-@using WebApi.ViewModels.Response
+﻿@using WebApi.ViewModels.Response
 @using Newtonsoft.Json
+@using WebApi.Pagination
+@model PaginatedList<WebApi.Models.Etiqueta>
 @{
     ViewData["Title"] = "Lista de de etiquetas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -43,7 +44,7 @@
                 <th>ID</th>
                  <th>Título</th>
                 <th>Fecha de creación</th>
-                <th></th>
+                <th>Acciones</th>
             </tr>
             @foreach (var etiqueta in Model)
             {
@@ -63,4 +64,21 @@
     {
         <p>No hay etiquetas</p>
     }
+</div>
+@{
+    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.NextPage ? "disabled" : "";
+}
+
+<div class="container">
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex-1)"
+       class=" btn btn-primary @prevDisabled">
+        Anterior
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex+1)"
+       class=" btn btn-primary @nextDisabled">
+        Siguiente
+    </a>
 </div>

@@ -1,6 +1,7 @@
-﻿@model IEnumerable<WebApi.Models.Categoria>
+﻿@using WebApi.Pagination
 @using WebApi.ViewModels.Response
 @using Newtonsoft.Json
+@model PaginatedList<WebApi.Models.Categoria>
 @{
     ViewData["Title"] = "Lista de Categorias";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -62,4 +63,21 @@
             No Hay Categorias
         </p>
     }
+</div>
+@{
+    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.NextPage ? "disabled" : "";
+}
+
+<div class="container">
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex-1)"
+       class=" btn btn-primary @prevDisabled">
+        Anterior
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex+1)"
+       class=" btn btn-primary @nextDisabled">
+        Siguiente
+    </a>
 </div>

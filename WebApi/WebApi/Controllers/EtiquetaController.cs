@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
+using WebApi.Pagination;
 using WebApi.Services;
 
 namespace WebApi.Controllers
@@ -11,9 +12,10 @@ namespace WebApi.Controllers
         {
             _etiquetaService = etiquetaService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber=1)
         {
-            var etiquetas = await _etiquetaService.LitadoDeEtiquetas();
+            var listaDeEtiquetas = await _etiquetaService.LitadoDeEtiquetas();
+            var etiquetas = await PaginatedList<Etiqueta>.CreateAsync(listaDeEtiquetas, pageNumber, 5);
             return View(etiquetas);
         }
 

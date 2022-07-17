@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using WebApi.Datos;
 using WebApi.Models;
+using WebApi.Pagination;
 using WebApi.Services;
 using WebApi.ViewModels.Request;
 
@@ -10,15 +12,16 @@ namespace WebApi.Controllers
     {
         private readonly ArticuloService _articuloService;
 
-        public ArticuloController(ArticuloService articuloService)
+        public ArticuloController(ArticuloService articuloService, ApplicationDbContext context)
         {
             _articuloService = articuloService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber=1)
         {
-            var articulos = await _articuloService.ListadoDeArticulos();
+            var articulosencontrados = await _articuloService.ListadoDeArticulos();
+            var articulos = await PaginatedList<Articulo>.CreateAsync(articulosencontrados, pageNumber, 5);
             return View(articulos);
         }
 
