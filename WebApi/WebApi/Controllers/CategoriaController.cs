@@ -19,9 +19,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber=1)
+        public async Task<IActionResult> Index(string nombre,int pageNumber=1)
         {
-            var listaDeCategorias = await _categoriaService.ListadoDeCategorias();
+            var listaDeCategorias = await _categoriaService.ListadoDeCategorias(nombre);
             var categorias = await PaginatedList<Categoria>.CreateAsync(listaDeCategorias, pageNumber, 5);
             return View(categorias);
         }

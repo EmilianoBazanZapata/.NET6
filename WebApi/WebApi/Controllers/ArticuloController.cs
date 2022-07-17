@@ -18,9 +18,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber=1)
+        public async Task<IActionResult> Index(string nombre,int pageNumber=1)
         {
-            var articulosencontrados = await _articuloService.ListadoDeArticulos();
+            var articulosencontrados = await _articuloService.ListadoDeArticulos(nombre);
             var articulos = await PaginatedList<Articulo>.CreateAsync(articulosencontrados, pageNumber, 5);
             return View(articulos);
         }

@@ -15,6 +15,14 @@
     <div class="col-3">
         <a asp-action="Crear" class="btn btn-primary form-control">Crear artículo</a>
     </div>
+    <div class="col-3">
+        <form method="get" asp-action="Index">
+            <div class="input-group mb-3">
+                <input name="nombre" type="text" class="form-control" placeholder="Ingrse un Nombre" aria-label="Ingrse un Nombre" aria-describedby="button-addon2">
+                <button class="btn btn-outline-warning" type="submit" id="button-addon2">Buscar</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div>
@@ -76,16 +84,21 @@
     var prevDisabled = !Model.PreviousPage ? "disabled" : "";
     var nextDisabled = !Model.NextPage ? "disabled" : "";
 }
-
-<div class="container">
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex-1)"
-       class=" btn btn-primary @prevDisabled">
-        Anterior
-    </a>
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex+1)"
-       class=" btn btn-primary @nextDisabled">
-        Siguiente
-    </a>
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="row">
+        <div class="col-4 m-3">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex-1)"
+               class=" btn btn-primary @prevDisabled">
+                Anterior
+            </a>
+        </div>
+        <div class="col-3 m-3">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex+1)"
+               class=" btn btn-primary @nextDisabled">
+                Siguiente
+            </a>
+        </div>
+    </div>
 </div>

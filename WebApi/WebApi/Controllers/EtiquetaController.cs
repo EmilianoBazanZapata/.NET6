@@ -12,9 +12,9 @@ namespace WebApi.Controllers
         {
             _etiquetaService = etiquetaService;
         }
-        public async Task<IActionResult> Index(int pageNumber=1)
+        public async Task<IActionResult> Index(string nombre,int pageNumber=1)
         {
-            var listaDeEtiquetas = await _etiquetaService.LitadoDeEtiquetas();
+            var listaDeEtiquetas = await _etiquetaService.LitadoDeEtiquetas(nombre);
             var etiquetas = await PaginatedList<Etiqueta>.CreateAsync(listaDeEtiquetas, pageNumber, 5);
             return View(etiquetas);
         }

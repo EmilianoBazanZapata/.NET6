@@ -14,10 +14,10 @@ namespace WebApi.Services
             _repository = repository;
         }
 
-        public async Task<IQueryable<Etiqueta>> LitadoDeEtiquetas() 
+        public async Task<IQueryable<Etiqueta>> LitadoDeEtiquetas(string nombre) 
         {
             var etiquetas = await _repository.GetQueryAsync<Etiqueta>(
-                                                predicate: a => a.SoftDelete == false);
+                                                predicate: a => nombre != null ? a.Titulo.Contains(nombre) :  a.SoftDelete == false);
 
             return etiquetas;
         }

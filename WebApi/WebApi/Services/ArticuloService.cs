@@ -18,10 +18,10 @@ namespace WebApi.Services
 
         }
 
-        public async Task<IQueryable<Articulo>> ListadoDeArticulos()
+        public async Task<IQueryable<Articulo>> ListadoDeArticulos(string nombre)
         {
             var articulos = await _repository.GetQueryAsync<Articulo>(
-                                                            predicate: a => a.SoftDelete == false,
+                                                            predicate: a => nombre!= null ? a.Titulo.Contains(nombre) && a.SoftDelete == false : a.SoftDelete == false,
                                                             include: a => a.Include(a => a.Categoria));
 
             return articulos;

@@ -15,10 +15,10 @@ namespace WebApi.Services
 
         }
 
-        public async Task<IQueryable<Categoria>> ListadoDeCategorias()
+        public async Task<IQueryable<Categoria>> ListadoDeCategorias(string nombre)
         {
             var categorias = await _repository.GetQueryAsync<Categoria>(
-                                                            predicate: a => a.SoftDelete == false);
+                                                            predicate: a => nombre!= null ? a.Nombre.Contains(nombre) : a.SoftDelete == false);
 
             return categorias;
         }
