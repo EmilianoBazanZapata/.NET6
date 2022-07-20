@@ -18,6 +18,7 @@ namespace WebApi.Datos
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Articulo> Articulos { get; set; }
         public DbSet<Etiqueta> Etiquetas { get; set; }
+        public DbSet<ArticuloEtiqueta> ArticuloEtiquetas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

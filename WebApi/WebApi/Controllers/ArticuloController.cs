@@ -5,6 +5,7 @@ using WebApi.Models;
 using WebApi.Pagination;
 using WebApi.Services;
 using WebApi.ViewModels.Request;
+using WebApi.ViewModels.Response;
 
 namespace WebApi.Controllers
 {
@@ -18,7 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string nombre,int pageNumber=1)
+        public async Task<IActionResult> Index(string nombre, int pageNumber = 1)
         {
             var articulosencontrados = await _articuloService.ListadoDeArticulos(nombre);
             var articulos = await PaginatedList<Articulo>.CreateAsync(articulosencontrados, pageNumber, 5);
@@ -73,6 +74,33 @@ namespace WebApi.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(articuloVm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdministrarEtiquetas(int id)
+        {
+            var result = await _articuloService.AdministrarEtiquetas(id);
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdministrarEtiquetas(ArticuloEtiquetaViewModel articuloEtiquetaViewModel)
+        {
+
+            var result = await _articuloService.AdministrarEtiquetas(articuloEtiquetaViewModel);
+            TempData["alerta"] = JsonConvert.SerializeObject(result);
+
+            return RedirectToAction(nameof(AdministrarEtiquetas), new { @id = articuloEtiquetaViewModel.ArticuloEtiqueta.ArticuloId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarEtiquetas(int idEtiqueta, ArticuloEtiquetaViewModel articuloEtiquetas)
+        {
+            var result = await _articuloService.EliminarEtiquetas(idEtiqueta,articuloEtiquetas);
+            TempData["alerta"] = JsonConvert.SerializeObject(result);
+
+            return RedirectToAction(nameof(AdministrarEtiquetas), new { @id = articuloEtiquetas.Articulo.Id });
         }
     }
 }
