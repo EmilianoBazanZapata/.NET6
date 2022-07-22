@@ -195,7 +195,7 @@ namespace WebApi.Services
                 {
                     Status = 200,
                     Titulo = "Felicitaciones",
-                    Cuerpo = $"Se Agregó la etiqueta al Articulo: {articuloEtiquetaViewModel.ArticuloEtiqueta}, exitosamente."
+                    Cuerpo = $"Se Agregó la Etiqueta, exitosamente."
                 };
             }
             catch (WebException ex)
